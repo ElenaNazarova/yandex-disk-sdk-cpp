@@ -34,7 +34,14 @@ namespace yadisk
         auto download(url::path from, url::path to, std::list<string> fields = std::list<string>()) -> json;
 
         auto copy(url::path from, url::path to, bool overwrite, std::list<string> fields = std::list<string>()) -> json;
-
+        
+        /// Move a remote resource
+		/// \param[in] from
+        /// \param[in] to
+		/// \param[in] overwrite
+        /// \param[in] fields
+		/// \include examples/move.cpp
+		///
         auto move(url::path from, url::path to, bool overwrite, std::list<string> fields = std::list<string>()) -> json;
 
         auto mkdir(url::path dir, std::list<string> fields = std::list<string>()) -> json;
