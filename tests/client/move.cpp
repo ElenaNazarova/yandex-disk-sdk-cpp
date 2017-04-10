@@ -12,6 +12,8 @@ std::string wrong_token = "wrongtoken";
 std::string non_exist_file = "not_existed_file11123243.dat";
 std::string valid_file = "file.dat";
 std::string new_valid_file = "file.dat.mov";
+std::string empty_dir = "empty_directory";
+std::string new_empty_dir = "empty_directory_new_name";
 
 TEST_CASE("try to move a file with wrong toker", "[client][move]")
 {
@@ -39,4 +41,40 @@ TEST_CASE("try to move non existed file", "[client][move]")
 
 	// Then
 	REQUIRE(answer["error"].get<std::string>() == "DiskNotFoundError");
+}
+
+TEST_CASE("moving file to new valid name", "[client][move]")
+{
+	// Given
+	path old_path { valid_file };
+	path new_path { new_valid_file };
+	ydclient client{ valid_token };
+
+	// When
+	auto answer = client.move(old_path, new_path);
+	// restore back for correct next tests
+	client.move(new_path, old_path);
+
+	// Then
+	REQUIRE(answer["href"].get<std::string>() == "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2Ffile.dat.mov");
+	REQUIRE(answer["method"].get<std::string>() == "GET");
+	REQUIRE(answer["templated"].get<bool>() == false);
+}
+
+TEST_CASE("moving empty dir to new valid name", "[client][move]")
+{
+	// Given
+	path old_path { empty_dir };
+	path new_path { new_empty_dir };
+	ydclient client{ valid_token };
+
+	// When
+	auto answer = client.move(old_path, new_path);
+	// restore back for correct next tests
+	client.move(new_path, old_path);
+
+	// Then
+	REQUIRE(answer["href"].get<std::string>() == "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2Fempty_directory_new_name");
+	REQUIRE(answer["method"].get<std::string>() == "GET");
+	REQUIRE(answer["templated"].get<bool>() == false);
 }
