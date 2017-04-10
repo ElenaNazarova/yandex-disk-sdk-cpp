@@ -26,6 +26,9 @@ namespace yadisk
 		if (overwrite) {
 			url_params["overwrite"] = "true";
 		}
+		else {
+			url_params["overwrite"] = "false";
+		}
 		if (!fields.empty()) {
 			bool href = false;
 			bool method = false;
