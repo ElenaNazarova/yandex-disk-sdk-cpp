@@ -4,6 +4,7 @@
 #include <yadisk/client.hpp>
 #include <boost/algorithm/string/join.hpp>
 
+#include <algorithm>
 #include <sstream>
 using std::stringstream;
 
@@ -30,30 +31,18 @@ namespace yadisk
 			url_params["overwrite"] = "false";
 		}
 		if (!fields.empty()) {
-			bool href = false;
-			bool method = false;
-			bool templated = false;
-			for (auto& str : fields) {
-				if (str == "href") {
-					href = true;
-				}
-				else if (str == "method") {
-					method = true;
-				}
-				else if (str == "templated") {
-					templated = true;
-				}
-			}
 			std::string temp = "";
-			if (href) {
-				temp += temp.empty() ? "" : ",";
-				temp += "href";
+			auto result = std::find(std::begin(fields), std::end(fields), "href");
+			if (result != std::end(fields)) {
+				temp = "href";
 			}
-			if (method) {
+			result = std::find(std::begin(fields), std::end(fields), "method");
+			if (result != std::end(fields)) {
 				temp += temp.empty() ? "" : ",";
 				temp += "method";
 			}
-			if (templated) {
+			result = std::find(std::begin(fields), std::end(fields), "templated");
+			if (result != std::end(fields)) {
 				temp += temp.empty() ? "" : ",";
 				temp += "templated";
 			}
