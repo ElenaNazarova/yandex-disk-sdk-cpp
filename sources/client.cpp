@@ -11,6 +11,15 @@ using std::stringstream;
 #include "callbacks.hpp"
 #include "quote.hpp"
 
+static void concate_fields_to_string (std::string& res, const std::list<string>& fields, const std::string& what)
+{
+	auto result = std::find(std::begin(fields), std::end(fields), what);
+	if (result != std::end(fields)) {
+		res += res.empty() ? "" : ",";
+		res += what;
+	}
+}
+
 namespace yadisk
 {
 	static const std::string api_url = "https://cloud-api.yandex.net/v1/disk";
@@ -32,20 +41,9 @@ namespace yadisk
 		}
 		if (!fields.empty()) {
 			std::string temp = "";
-			auto result = std::find(std::begin(fields), std::end(fields), "href");
-			if (result != std::end(fields)) {
-				temp = "href";
-			}
-			result = std::find(std::begin(fields), std::end(fields), "method");
-			if (result != std::end(fields)) {
-				temp += temp.empty() ? "" : ",";
-				temp += "method";
-			}
-			result = std::find(std::begin(fields), std::end(fields), "templated");
-			if (result != std::end(fields)) {
-				temp += temp.empty() ? "" : ",";
-				temp += "templated";
-			}
+			concate_fields_to_string (temp, fields, "href");
+			concate_fields_to_string (temp, fields, "method");
+			concate_fields_to_string (temp, fields, "templated");
 			if (!temp.empty()) {
 				url_params["fields"] = temp;
 			}
