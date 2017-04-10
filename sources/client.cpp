@@ -23,8 +23,8 @@ namespace yadisk
 		url::params_t url_params;
 		url_params["from"] = quote(from.string(), curl);
 		url_params["path"] = quote(to.string(), curl);
-		url_params["overwrite"] = overwrite;
-		url_params["fields"] = boost::algorithm::join(fields, ",");
+		//url_params["overwrite"] = overwrite;
+		//url_params["fields"] = boost::algorithm::join(fields, ",");
 		std::string url = api_url + "/resources/move" + "?" + url_params.string();
 
 		curl_slist *header_list = nullptr;
