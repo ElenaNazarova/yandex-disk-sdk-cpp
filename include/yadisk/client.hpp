@@ -35,7 +35,7 @@ namespace yadisk
 
         auto copy(url::path from, url::path to, bool overwrite, std::list<string> fields = std::list<string>()) -> json;
 
-        auto move(url::path from, url::path to, bool overwrite, std::list<string> fields = std::list<string>()) -> json;
+        auto move(url::path from, url::path to, bool overwrite = false, std::list<string> fields = std::list<string>()) -> json;
 
         auto mkdir(url::path dir, std::list<string> fields = std::list<string>()) -> json;
 
