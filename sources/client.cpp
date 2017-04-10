@@ -23,11 +23,41 @@ namespace yadisk
 		url::params_t url_params;
 		url_params["from"] = quote(from.string(), curl);
 		url_params["path"] = quote(to.string(), curl);
-		if (overwrite)
-		{
+		if (overwrite) {
 			url_params["overwrite"] = "true";
 		}
-		//url_params["fields"] = boost::algorithm::join(fields, ",");
+		if (!fields.empty()) {
+			bool href = false;
+			bool method = false;
+			bool templated = false;
+			for (auto& str : fields) {
+				if (str == "href") {
+					href = true;
+				}
+				else if (str == "method") {
+					method = true;
+				}
+				else if (str == "templated") {
+					templated = true;
+				}
+			}
+			std::string temp = "";
+			if (href) {
+				temp += temp.empty() ? "" : ",";
+				temp += "href";
+			}
+			if (method) {
+				temp += temp.empty() ? "" : ",";
+				temp += "method";
+			}
+			if (templated) {
+				temp += temp.empty() ? "" : ",";
+				temp += "templated";
+			}
+			if (!temp.empty()) {
+				url_params["fields"] = temp;
+			}
+		}
 		std::string url = api_url + "/resources/move" + "?" + url_params.string();
 
 		curl_slist *header_list = nullptr;
